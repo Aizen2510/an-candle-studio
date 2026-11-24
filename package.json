@@ -1,0 +1,19 @@
+{
+  "name": "an-candle-studio",
+  "version": "1.0.0",
+  "description": "Website Thương Mại Điện Tử Nến Thơm Thủ Công AN Candle Studio - Fullstack Node.js & Express",
+  "main": "server/src/server.js",
+  "scripts": {
+    "start": "node server/src/server.js",
+    "dev": "node --watch server/src/server.js",
+    "test": "node server/test/test-api.js"
+  },
+  "keywords": ["ecommerce", "candles", "candle-studio", "vietnam", "express", "fullstack"],
+  "author": "AN Candle Studio",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2"
+  }
+}

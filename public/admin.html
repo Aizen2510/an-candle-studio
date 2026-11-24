@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản Trị Cửa Hàng — AN CANDLE STUDIO Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#FAF7F2',
+            beige: '#F2ECE4',
+            sand: '#E6DDD0',
+            wood: '#5C3D2E',
+            woodDark: '#3E271C',
+            amberFlame: '#E5A93C',
+            amberLight: '#F5C769',
+            herbal: '#3E5641',
+            herbalDark: '#2C3F2F',
+            herbalLight: '#E9EFEA',
+            ink: '#2C1E16',
+            earth: '#6B584C',
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-beige/40 text-ink font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- Top Admin Nav -->
+  <header class="bg-woodDark text-cream px-6 py-4 flex items-center justify-between shadow-md">
+    <div class="flex items-center gap-3">
+      <span class="w-9 h-9 rounded-full bg-amberLight text-woodDark flex items-center justify-center font-serif font-bold text-sm shadow-sm">AN</span>
+      <div>
+        <h1 class="font-serif text-lg font-bold tracking-wide leading-none">AN CANDLE STUDIO — Quản Trị Hệ Thống</h1>
+        <span class="text-[11px] text-cream/60">Bảng điều khiển kinh doanh & vận hành đơn hàng</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-4 text-xs">
+      <a href="/" target="_blank" class="px-3.5 py-1.5 rounded-full bg-cream/10 hover:bg-cream/20 text-cream transition flex items-center gap-1.5">
+        <span>🌐 Xem Website Khách</span>
+      </a>
+      <a href="/track" target="_blank" class="px-3.5 py-1.5 rounded-full bg-cream/10 hover:bg-cream/20 text-cream transition">
+        📦 Tra Cứu Đơn
+      </a>
+    </div>
+  </header>
+
+  <!-- Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
+
+    <!-- KPI Metric Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      
+      <!-- Total Revenue -->
+      <div class="bg-white p-5 rounded-3xl border border-wood/15 shadow-sm space-y-2">
+        <span class="text-xs font-semibold text-earth uppercase tracking-wider block">Tổng Doanh Thu</span>
+        <div class="flex items-baseline justify-between">
+          <span id="statRevenue" class="text-2xl font-bold font-serif text-wood">0đ</span>
+          <span class="text-xs font-semibold text-herbal bg-herbalLight px-2 py-0.5 rounded-full">Thực nhận</span>
+        </div>
+        <p class="text-[11px] text-earth">Không tính đơn hàng đã hủy</p>
+      </div>
+
+      <!-- Total Orders -->
+      <div class="bg-white p-5 rounded-3xl border border-wood/15 shadow-sm space-y-2">
+        <span class="text-xs font-semibold text-earth uppercase tracking-wider block">Tổng Số Đơn Hàng</span>
+        <div class="flex items-baseline justify-between">
+          <span id="statTotalOrders" class="text-2xl font-bold font-serif text-ink">0</span>
+          <span class="text-xs font-semibold text-wood bg-sand/50 px-2 py-0.5 rounded-full">Tất cả</span>
+        </div>
+        <p class="text-[11px] text-earth">Bao gồm toàn bộ đơn phát sinh</p>
+      </div>
+
+      <!-- Pending Orders -->
+      <div class="bg-white p-5 rounded-3xl border border-amberFlame/40 shadow-sm space-y-2 bg-gradient-to-br from-white to-amberFlame/5">
+        <span class="text-xs font-semibold text-earth uppercase tracking-wider block">Đơn Chờ Xác Nhận</span>
+        <div class="flex items-baseline justify-between">
+          <span id="statPendingOrders" class="text-2xl font-bold font-serif text-amberFlame">0</span>
+          <span class="text-xs font-semibold text-ink bg-amberFlame px-2 py-0.5 rounded-full">Cần xử lý</span>
+        </div>
+        <p class="text-[11px] text-earth">Cần xác nhận thanh toán/in thiệp</p>
+      </div>
+
+      <!-- Shipping Orders -->
+      <div class="bg-white p-5 rounded-3xl border border-herbal/30 shadow-sm space-y-2">
+        <span class="text-xs font-semibold text-earth uppercase tracking-wider block">Đang Giao Hàng</span>
+        <div class="flex items-baseline justify-between">
+          <span id="statShippingOrders" class="text-2xl font-bold font-serif text-herbal">0</span>
+          <span class="text-xs font-semibold text-herbal bg-herbalLight px-2 py-0.5 rounded-full">Vận chuyển</span>
+        </div>
+        <p class="text-[11px] text-earth">Đơn vị vận chuyển đang phát</p>
+      </div>
+
+    </div>
+
+    <!-- Main Navigation Tabs: Orders vs Products vs Vouchers -->
+    <div class="flex items-center gap-3 border-b border-wood/15 pb-2">
+      <button onclick="switchTab('orders')" id="tabBtn-orders" class="px-5 py-2.5 rounded-2xl font-semibold text-sm bg-wood text-cream transition shadow-sm">
+        📦 Quản Lý Đơn Hàng
+      </button>
+      <button onclick="switchTab('products')" id="tabBtn-products" class="px-5 py-2.5 rounded-2xl font-semibold text-sm text-earth hover:text-ink transition">
+        🕯️ Quản Lý Sản Phẩm
+      </button>
+      <button onclick="switchTab('vouchers')" id="tabBtn-vouchers" class="px-5 py-2.5 rounded-2xl font-semibold text-sm text-earth hover:text-ink transition">
+        🎟️ Mã Khuyến Mãi
+      </button>
+    </div>
+
+    <!-- TAB 1: ORDERS MANAGEMENT -->
+    <section id="tab-orders" class="space-y-4">
+      
+      <!-- Filter Toolbar -->
+      <div class="bg-white p-4 rounded-3xl border border-wood/15 shadow-sm flex flex-wrap items-center justify-between gap-4">
+        
+        <!-- Status Filter Pills -->
+        <div class="flex flex-wrap items-center gap-1.5 text-xs font-semibold">
+          <button onclick="filterStatus('all')" class="status-filter-btn px-3.5 py-2 rounded-xl bg-wood text-cream" data-status="all">Tất cả</button>
+          <button onclick="filterStatus('pending')" class="status-filter-btn px-3.5 py-2 rounded-xl bg-beige text-earth hover:text-ink" data-status="pending">Chờ xác nhận</button>
+          <button onclick="filterStatus('confirmed')" class="status-filter-btn px-3.5 py-2 rounded-xl bg-beige text-earth hover:text-ink" data-status="confirmed">Đã duyệt</button>
+          <button onclick="filterStatus('shipping')" class="status-filter-btn px-3.5 py-2 rounded-xl bg-beige text-earth hover:text-ink" data-status="shipping">Đang giao</button>
+          <button onclick="filterStatus('completed')" class="status-filter-btn px-3.5 py-2 rounded-xl bg-beige text-earth hover:text-ink" data-status="completed">Hoàn thành</button>
+          <button onclick="filterStatus('cancelled')" class="status-filter-btn px-3.5 py-2 rounded-xl bg-beige text-earth hover:text-ink" data-status="cancelled">Đã hủy</button>
+        </div>
+
+        <!-- Search Input -->
+        <div class="relative flex-1 max-w-xs">
+          <input 
+            type="text" 
+            id="orderSearchInput"
+            oninput="handleOrderSearch(this.value)"
+            placeholder="Tìm mã đơn, tên, SĐT..."
+            class="w-full pl-9 pr-3 py-2 text-xs bg-beige/60 rounded-xl border border-wood/15 focus:outline-none focus:border-wood"
+          />
+          <svg class="w-4 h-4 text-earth absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+
+      </div>
+
+      <!-- Orders Table -->
+      <div class="bg-white rounded-3xl border border-wood/15 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-beige/70 text-earth uppercase font-semibold border-b border-wood/10 text-[11px]">
+                <th class="py-3 px-4">Mã Đơn</th>
+                <th class="py-3 px-4">Khách Hàng</th>
+                <th class="py-3 px-4">Sản Phẩm</th>
+                <th class="py-3 px-4">Tổng Tiền</th>
+                <th class="py-3 px-4">Thanh Toán</th>
+                <th class="py-3 px-4">Trạng Thái</th>
+                <th class="py-3 px-4 text-right">Thao Tác Nhanh</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody" class="divide-y divide-wood/10">
+              <tr>
+                <td colspan="7" class="py-8 text-center text-earth">Đang tải dữ liệu đơn hàng...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TAB 2: PRODUCTS MANAGEMENT -->
+    <section id="tab-products" class="hidden space-y-4">
+      <div class="bg-white rounded-3xl border border-wood/15 shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-wood/10 flex items-center justify-between">
+          <h3 class="font-serif text-lg font-bold text-ink">Danh Mục 8 Hũ Nến Thơm & Set Quà Thủ Công</h3>
+          <span class="text-xs text-earth">Đồng bộ cơ sở dữ liệu thời gian thực</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-beige/70 text-earth uppercase font-semibold border-b border-wood/10 text-[11px]">
+                <th class="py-3 px-4">Sản Phẩm</th>
+                <th class="py-3 px-4">Bộ Sưu Tập</th>
+                <th class="py-3 px-4">Giá Niêm Yết</th>
+                <th class="py-3 px-4">Tồn Kho</th>
+                <th class="py-3 px-4">Trạng Thái</th>
+                <th class="py-3 px-4 text-right">Hành Động</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody" class="divide-y divide-wood/10">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: VOUCHERS MANAGEMENT -->
+    <section id="tab-vouchers" class="hidden space-y-4">
+      <div class="bg-white rounded-3xl border border-wood/15 shadow-sm p-6 space-y-4">
+        <h3 class="font-serif text-lg font-bold text-ink">Mã Giảm Giá & Chiến Dịch Ưu Đãi Đang Hoạt Động</h3>
+        <div id="vouchersList" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ORDER DETAIL MODAL -->
+  <div id="orderDetailModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-ink/70 backdrop-blur-sm">
+    <div class="bg-cream rounded-3xl max-w-2xl w-full border border-wood/20 shadow-warm-lg overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="px-6 py-4 bg-wood text-cream flex items-center justify-between">
+        <h4 class="font-serif text-base font-bold">Chi Tiết Đơn Hàng <span id="modalOrderId" class="font-mono text-amberLight"></span></h4>
+        <button onclick="closeOrderDetailModal()" class="p-1 rounded-full hover:bg-white/10 text-cream">✕</button>
+      </div>
+
+      <div id="modalOrderContent" class="p-6 overflow-y-auto space-y-5 text-xs">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="p-4 bg-beige/60 border-t border-wood/15 flex items-center justify-between">
+        <span class="text-[11px] text-earth">Cập nhật trạng thái đơn hàng bên dưới:</span>
+        <div class="flex gap-2">
+          <button onclick="updateModalOrderStatus('confirmed')" class="px-3 py-1.5 rounded-xl bg-wood text-cream hover:bg-woodDark font-semibold">Duyệt Đơn</button>
+          <button onclick="updateModalOrderStatus('shipping')" class="px-3 py-1.5 rounded-xl bg-herbal text-cream hover:bg-herbalDark font-semibold">Giao Hàng</button>
+          <button onclick="updateModalOrderStatus('completed')" class="px-3 py-1.5 rounded-xl bg-amberFlame text-ink font-bold">Hoàn Thành</button>
+          <button onclick="updateModalOrderStatus('cancelled')" class="px-3 py-1.5 rounded-xl bg-red-100 text-red-700 font-semibold">Hủy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allOrders = [];
+    let currentFilter = 'all';
+    let currentSearch = '';
+    let selectedOrder = null;
+
+    function formatVND(n) {
+      return (Number(n) || 0).toLocaleString('vi-VN') + 'đ';
+    }
+
+    const statusBadge = {
+      pending: '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-amberFlame text-ink">Chờ xác nhận</span>',
+      confirmed: '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-herbalLight text-herbal">Đã duyệt</span>',
+      shipping: '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-wood text-cream">Đang giao</span>',
+      completed: '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-herbal text-cream">Hoàn tất</span>',
+      cancelled: '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-red-100 text-red-700">Đã hủy</span>'
+    };
+
+    async function loadDashboard() {
+      try {
+        const [statsRes, ordersRes, productsRes, vouchersRes] = await Promise.all([
+          fetch('/api/stats').then(r => r.json()),
+          fetch('/api/orders').then(r => r.json()),
+          fetch('/api/products').then(r => r.json()),
+          fetch('/api/vouchers').then(r => r.json())
+        ]);
+
+        if (statsRes.success) {
+          document.getElementById('statRevenue').textContent = formatVND(statsRes.data.totalRevenue);
+          document.getElementById('statTotalOrders').textContent = statsRes.data.totalOrders;
+          document.getElementById('statPendingOrders').textContent = statsRes.data.pendingOrders;
+          document.getElementById('statShippingOrders').textContent = statsRes.data.shippingOrders;
+        }
+
+        if (ordersRes.success) {
+          allOrders = ordersRes.data;
+          renderOrdersTable();
+        }
+
+        if (productsRes.success) {
+          renderProductsTable(productsRes.data);
+        }
+
+        if (vouchersRes.success) {
+          renderVouchers(vouchersRes.data);
+        }
+      } catch (err) {
+        console.error('Failed to load admin data:', err);
+      }
+    }
+
+    function renderOrdersTable() {
+      const tbody = document.getElementById('ordersTableBody');
+      const filtered = allOrders.filter(o => {
+        const matchStatus = currentFilter === 'all' || o.status === currentFilter;
+        const q = currentSearch.toLowerCase().trim();
+        const matchSearch = !q || 
+          o.id.toLowerCase().includes(q) || 
+          o.customer.name.toLowerCase().includes(q) || 
+          o.customer.phone.includes(q);
+        return matchStatus && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-earth">Không có đơn hàng nào phù hợp bộ lọc.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(order => `
+        <tr class="hover:bg-beige/30 transition">
+          <td class="py-3 px-4 font-mono font-bold text-wood cursor-pointer hover:underline" onclick="openOrderDetail('${order.id}')">
+            ${order.id}
+          </td>
+          <td class="py-3 px-4">
+            <strong class="text-ink">${order.customer.name}</strong>
+            <span class="block text-[11px] text-earth">${order.customer.phone}</span>
+          </td>
+          <td class="py-3 px-4">
+            <span class="font-semibold text-ink">${(order.items || []).length} món</span>
+            <span class="block text-[11px] text-earth truncate max-w-[160px]">${(order.items || []).map(i => i.name).join(', ')}</span>
+          </td>
+          <td class="py-3 px-4 font-bold text-wood">
+            ${formatVND(order.total)}
+          </td>
+          <td class="py-3 px-4">
+            <span class="font-semibold uppercase text-ink">${order.paymentMethod}</span>
+            <span class="block text-[11px] ${order.paymentStatus === 'paid' ? 'text-herbal font-bold' : 'text-earth'}">
+              ${order.paymentStatus === 'paid' ? '✓ Đã trả' : 'Chờ TT'}
+            </span>
+          </td>
+          <td class="py-3 px-4">
+            ${statusBadge[order.status] || order.status}
+          </td>
+          <td class="py-3 px-4 text-right space-x-1.5 whitespace-nowrap">
+            <button onclick="openOrderDetail('${order.id}')" class="px-2.5 py-1 rounded-lg bg-beige hover:bg-sand text-ink text-[11px] font-semibold">
+              Chi tiết
+            </button>
+            ${order.status === 'pending' ? `
+              <button onclick="quickUpdateStatus('${order.id}', 'confirmed')" class="px-2.5 py-1 rounded-lg bg-wood text-cream hover:bg-woodDark text-[11px] font-semibold">
+                Duyệt
+              </button>
+            ` : ''}
+            ${order.status === 'confirmed' ? `
+              <button onclick="quickUpdateStatus('${order.id}', 'shipping')" class="px-2.5 py-1 rounded-lg bg-herbal text-cream hover:bg-herbalDark text-[11px] font-semibold">
+                Giao
+              </button>
+            ` : ''}
+            ${order.status === 'shipping' ? `
+              <button onclick="quickUpdateStatus('${order.id}', 'completed')" class="px-2.5 py-1 rounded-lg bg-amberFlame text-ink text-[11px] font-bold">
+                Xong
+              </button>
+            ` : ''}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderProductsTable(products) {
+      const tbody = document.getElementById('productsTableBody');
+      tbody.innerHTML = products.map(p => `
+        <tr class="hover:bg-beige/30 transition">
+          <td class="py-3 px-4 flex items-center gap-3">
+            <img src="${p.image}" alt="${p.name}" class="w-10 h-10 rounded-xl object-cover border border-wood/10" />
+            <div>
+              <strong class="text-ink">${p.name}</strong>
+              <span class="block text-[11px] text-earth font-mono">${p.batchCode || ''}</span>
+            </div>
+          </td>
+          <td class="py-3 px-4">
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-herbalLight text-herbal">${p.category}</span>
+          </td>
+          <td class="py-3 px-4 font-mono font-semibold text-wood">
+            ${p.isGiftSet ? 'Set 299k' : '90g: 139k | 180g: 229k'}
+          </td>
+          <td class="py-3 px-4 font-semibold ${p.stockQty > 20 ? 'text-herbal' : 'text-red-600'}">
+            ${p.stockQty || 50} hũ
+          </td>
+          <td class="py-3 px-4">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.inStock ? 'bg-herbal/10 text-herbal' : 'bg-red-100 text-red-600'}">
+              ${p.inStock ? 'Đang bán' : 'Hết hàng'}
+            </span>
+          </td>
+          <td class="py-3 px-4 text-right">
+            <button onclick="toggleStock(${p.id}, ${!p.inStock})" class="px-2.5 py-1 rounded-lg border border-wood/20 hover:bg-beige text-[11px] font-semibold text-wood">
+              ${p.inStock ? 'Đóng kho' : 'Mở kho'}
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderVouchers(vouchers) {
+      const box = document.getElementById('vouchersList');
+      box.innerHTML = vouchers.map(v => `
+        <div class="p-4 rounded-2xl border border-wood/15 bg-beige/30 space-y-2">
+          <div class="flex items-center justify-between">
+            <strong class="font-mono text-sm text-wood font-bold bg-white px-2.5 py-1 rounded-lg border border-wood/10">${v.code}</strong>
+            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-herbal text-cream">Đang áp dụng</span>
+          </div>
+          <p class="text-xs text-ink leading-relaxed">${v.description}</p>
+          <div class="text-[11px] text-earth pt-1 border-t border-wood/10 flex justify-between">
+            <span>Giảm: <strong>${v.type === 'percent' ? v.value + '%' : formatVND(v.value)}</strong></span>
+            <span>Đơn từ: <strong>${formatVND(v.minOrder)}</strong></span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function quickUpdateStatus(orderId, newStatus) {
+      if (!confirm(`Xác nhận chuyển trạng thái đơn ${orderId} sang "${newStatus}"?`)) return;
+      try {
+        const res = await fetch(`/api/orders/${orderId}/status`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus })
+        });
+        const data = await res.json();
+        if (data.success) {
+          await loadDashboard();
+        } else {
+          alert(data.message || 'Lỗi cập nhật');
+        }
+      } catch (err) {
+        alert('Lỗi kết nối máy chủ');
+      }
+    }
+
+    async function toggleStock(productId, inStock) {
+      try {
+        const res = await fetch(`/api/products/${productId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ inStock })
+        });
+        const json = await res.json();
+        if (json.success) {
+          await loadDashboard();
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function filterStatus(st) {
+      currentFilter = st;
+      document.querySelectorAll('.status-filter-btn').forEach(btn => {
+        if (btn.dataset.status === st) {
+          btn.className = 'status-filter-btn px-3.5 py-2 rounded-xl bg-wood text-cream';
+        } else {
+          btn.className = 'status-filter-btn px-3.5 py-2 rounded-xl bg-beige text-earth hover:text-ink';
+        }
+      });
+      renderOrdersTable();
+    }
+
+    function handleOrderSearch(val) {
+      currentSearch = val;
+      renderOrdersTable();
+    }
+
+    function switchTab(tab) {
+      ['orders', 'products', 'vouchers'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
+        const btn = document.getElementById(`tabBtn-${t}`);
+        if (t === tab) {
+          btn.className = 'px-5 py-2.5 rounded-2xl font-semibold text-sm bg-wood text-cream transition shadow-sm';
+        } else {
+          btn.className = 'px-5 py-2.5 rounded-2xl font-semibold text-sm text-earth hover:text-ink transition';
+        }
+      });
+    }
+
+    function openOrderDetail(orderId) {
+      selectedOrder = allOrders.find(o => o.id === orderId);
+      if (!selectedOrder) return;
+
+      document.getElementById('modalOrderId').textContent = selectedOrder.id;
+      const content = document.getElementById('modalOrderContent');
+      content.innerHTML = `
+        <div class="grid grid-cols-2 gap-4 pb-4 border-b border-wood/10">
+          <div>
+            <span class="text-earth block">Khách hàng:</span>
+            <strong class="text-ink text-sm">${selectedOrder.customer.name}</strong>
+            <p class="text-earth">${selectedOrder.customer.phone}</p>
+            <p class="text-earth">${selectedOrder.customer.email || 'Không có email'}</p>
+          </div>
+          <div>
+            <span class="text-earth block">Địa chỉ giao:</span>
+            <p class="text-ink font-medium">${selectedOrder.customer.address}</p>
+            <p class="text-wood italic mt-1">Ghi chú: ${selectedOrder.customer.notes || 'Không có'}</p>
+          </div>
+        </div>
+
+        <div>
+          <span class="text-earth block font-semibold mb-2">Sản phẩm đặt:</span>
+          <div class="space-y-2">
+            ${(selectedOrder.items || []).map(i => `
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-beige/40 border border-wood/10">
+                <div>
+                  <strong class="text-ink">${i.name}</strong>
+                  <span class="text-earth block text-[11px]">Size: ${i.sizeKey} • SL: ${i.qty}</span>
+                  ${i.cardWish ? `<span class="text-wood block text-[11px] italic">💌 Thiệp: "${i.cardWish}"</span>` : ''}
+                </div>
+                <strong class="text-wood font-mono">${formatVND(i.price * i.qty)}</strong>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-wood/10 flex justify-between items-center text-sm">
+          <span>Tổng tiền:</span>
+          <strong class="text-wood font-bold text-base">${formatVND(selectedOrder.total)}</strong>
+        </div>
+      `;
+
+      document.getElementById('orderDetailModal').classList.remove('hidden');
+      document.getElementById('orderDetailModal').classList.add('flex');
+    }
+
+    function closeOrderDetailModal() {
+      document.getElementById('orderDetailModal').classList.add('hidden');
+      document.getElementById('orderDetailModal').classList.remove('flex');
+    }
+
+    async function updateModalOrderStatus(st) {
+      if (!selectedOrder) return;
+      await quickUpdateStatus(selectedOrder.id, st);
+      closeOrderDetailModal();
+    }
+
+    window.addEventListener('DOMContentLoaded', loadDashboard);
+  </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+services:
+  an-candle-studio:
+    build: .
+    container_name: an_candle_studio_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+    volumes:
+      - ./server/data:/app/server/data

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tra Cứu Đơn Hàng — AN CANDLE STUDIO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#FAF7F2',
+            beige: '#F2ECE4',
+            sand: '#E6DDD0',
+            wood: '#5C3D2E',
+            woodDark: '#3E271C',
+            amberFlame: '#E5A93C',
+            amberLight: '#F5C769',
+            herbal: '#3E5641',
+            herbalDark: '#2C3F2F',
+            herbalLight: '#E9EFEA',
+            ink: '#2C1E16',
+            earth: '#6B584C',
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-cream text-ink font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-cream/95 backdrop-blur-md border-b border-wood/10 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <span class="w-8 h-8 rounded-full bg-wood text-cream flex items-center justify-center font-serif font-bold text-sm">AN</span>
+        <div>
+          <span class="font-serif text-lg font-bold tracking-wider text-ink block leading-none">AN CANDLE STUDIO</span>
+          <span class="text-[10px] tracking-widest uppercase text-earth">Thắp Lên Bình Yên</span>
+        </div>
+      </a>
+      <div class="flex items-center gap-3">
+        <a href="/" class="text-xs sm:text-sm font-semibold text-earth hover:text-wood transition flex items-center gap-1.5">
+          ← Về Cửa Hàng
+        </a>
+        <a href="/admin" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-herbalLight text-herbal border border-herbal/20 hover:bg-herbal hover:text-cream transition">
+          Admin
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-10 space-y-8">
+
+    <!-- Hero Title & Search Form -->
+    <div class="text-center space-y-3">
+      <span class="inline-block px-3.5 py-1 rounded-full bg-herbalLight text-herbal text-xs font-bold uppercase tracking-wider">
+        ✦ Theo Dõi Hành Trình Bình Yên
+      </span>
+      <h1 class="font-serif text-3xl sm:text-4xl font-bold text-ink">Tra Cứu Đơn Hàng</h1>
+      <p class="text-xs sm:text-sm text-earth max-w-md mx-auto">
+        Nhập <strong>Mã đơn hàng</strong> (ví dụ <code>AN-2611-982415</code>) hoặc <strong>Số điện thoại</strong> bạn đã dùng khi đặt nến.
+      </p>
+
+      <form onsubmit="handleSearchOrder(event)" class="max-w-lg mx-auto pt-4 flex gap-2">
+        <input 
+          type="text" 
+          id="orderQueryInput"
+          placeholder="Mã đơn (AN-...) hoặc Số điện thoại"
+          required
+          class="flex-1 px-4 py-3 rounded-2xl bg-white border border-wood/20 text-ink text-sm placeholder-earth/60 focus:outline-none focus:border-wood shadow-sm"
+        />
+        <button 
+          type="submit" 
+          id="searchSubmitBtn"
+          class="px-6 py-3 rounded-2xl bg-wood text-cream font-semibold text-sm hover:bg-woodDark transition shadow-sm"
+        >
+          Tra Cứu
+        </button>
+      </form>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="hidden text-center py-12">
+      <div class="w-10 h-10 border-4 border-wood/30 border-t-wood rounded-full animate-spin mx-auto"></div>
+      <p class="text-xs text-earth mt-3">Đang tra cứu cơ sở dữ liệu studio...</p>
+    </div>
+
+    <!-- Error / Not Found State -->
+    <div id="errorState" class="hidden bg-beige/80 border border-wood/15 p-8 rounded-3xl text-center space-y-3 max-w-lg mx-auto">
+      <div class="w-12 h-12 rounded-full bg-sand/60 text-wood flex items-center justify-center text-xl mx-auto">🔍</div>
+      <h3 class="font-serif text-lg font-bold text-ink">Không Tìm Thấy Đơn Hàng</h3>
+      <p id="errorMsg" class="text-xs text-earth leading-relaxed">
+        Vui lòng kiểm tra lại mã đơn hàng hoặc số điện thoại. Nếu cần hỗ trợ ngay, liên hệ hotline 0908 123 456.
+      </p>
+    </div>
+
+    <!-- Order Result Box -->
+    <div id="orderResultBox" class="hidden bg-white rounded-3xl border border-wood/15 shadow-sm overflow-hidden divide-y divide-wood/10">
+      
+      <!-- Top Order Header -->
+      <div class="p-6 bg-beige/50 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h2 id="resOrderId" class="font-mono text-xl font-bold text-wood">AN-2611-XXXXXX</h2>
+            <span id="resStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-amberFlame text-ink">
+              Đang Xử Lý
+            </span>
+          </div>
+          <p id="resOrderDate" class="text-xs text-earth mt-1">Đặt lúc: 24/11/2026 14:30</p>
+        </div>
+
+        <div class="text-right">
+          <span class="text-xs text-earth block">Tổng tiền thanh toán</span>
+          <span id="resOrderTotal" class="font-bold text-wood text-xl">0đ</span>
+        </div>
+      </div>
+
+      <!-- Stepper Progress Timeline -->
+      <div class="p-6">
+        <h3 class="font-serif text-base font-bold text-ink mb-6">Tiến Trình Đơn Hàng</h3>
+        <div id="orderTimeline" class="space-y-6 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-sand">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Recipient & Payment Details -->
+      <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-beige/30 text-xs">
+        <div class="space-y-2">
+          <h4 class="font-serif text-sm font-bold text-ink uppercase tracking-wider">Thông Tin Người Nhận</h4>
+          <div><span class="text-earth">Họ và tên:</span> <strong id="resCustName" class="text-ink">--</strong></div>
+          <div><span class="text-earth">Số điện thoại:</span> <strong id="resCustPhone" class="text-ink">--</strong></div>
+          <div><span class="text-earth">Địa chỉ nhận hàng:</span> <span id="resCustAddress" class="text-ink">--</span></div>
+          <div><span class="text-earth">Ghi chú:</span> <em id="resCustNotes" class="text-earth">--</em></div>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="font-serif text-sm font-bold text-ink uppercase tracking-wider">Phương Thức & Thanh Toán</h4>
+          <div><span class="text-earth">Hình thức:</span> <strong id="resPaymentMethod" class="text-ink uppercase">--</strong></div>
+          <div><span class="text-earth">Trạng thái thanh toán:</span> <span id="resPaymentStatus" class="font-semibold text-herbal">--</span></div>
+          <div id="resVietQRBox" class="hidden mt-3 p-3 bg-white rounded-xl border border-wood/20">
+            <!-- Dynamic QR populated if pending payment -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Items List -->
+      <div class="p-6 space-y-4">
+        <h4 class="font-serif text-base font-bold text-ink">Sản Phẩm Trong Đơn Hàng</h4>
+        <div id="resItemsList" class="space-y-3">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="p-4 bg-beige/40 flex items-center justify-between text-xs">
+        <a href="/" class="font-semibold text-wood hover:underline">← Tiếp tục mua sắm</a>
+        <button onclick="window.print()" class="px-4 py-2 rounded-xl border border-wood/20 text-ink font-semibold hover:bg-white transition">
+          🖨️ In Hóa Đơn
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-woodDark text-cream/80 text-xs py-6 border-t border-wood/20 mt-12 text-center">
+    <p>© 2026 AN CANDLE STUDIO — Xưởng Nến Thơm Thủ Công & Nghệ Thuật Không Gian</p>
+    <p class="text-cream/50 mt-1">Hotline: 0908 123 456 • Email: contact@ancandlestudio.vn</p>
+  </footer>
+
+  <script>
+    function formatVND(n) {
+      return (Number(n) || 0).toLocaleString('vi-VN') + 'đ';
+    }
+
+    const statusMap = {
+      pending: { label: 'Chờ Xác Nhận', cls: 'bg-amberFlame text-ink' },
+      confirmed: { label: 'Đã Duyệt & Chuẩn Bị Nến', cls: 'bg-herbalLight text-herbal' },
+      shipping: { label: 'Đang Giao Hàng', cls: 'bg-wood text-cream' },
+      completed: { label: 'Hoàn Thành', cls: 'bg-herbal text-cream' },
+      cancelled: { label: 'Đã Hủy', cls: 'bg-red-100 text-red-700' }
+    };
+
+    async function handleSearchOrder(e) {
+      if (e) e.preventDefault();
+      const q = document.getElementById('orderQueryInput').value.trim();
+      if (!q) return;
+
+      document.getElementById('loadingState').classList.remove('hidden');
+      document.getElementById('errorState').classList.add('hidden');
+      document.getElementById('orderResultBox').classList.add('hidden');
+
+      try {
+        const res = await fetch(`/api/orders/track?query=${encodeURIComponent(q)}`);
+        const json = await res.json();
+
+        document.getElementById('loadingState').classList.add('hidden');
+
+        if (!json.success || !json.data) {
+          document.getElementById('errorState').classList.remove('hidden');
+          document.getElementById('errorMsg').textContent = json.message || 'Không tìm thấy thông tin đơn hàng này.';
+          return;
+        }
+
+        renderOrderDetails(json.data, json.paymentInfo);
+      } catch (err) {
+        document.getElementById('loadingState').classList.add('hidden');
+        document.getElementById('errorState').classList.remove('hidden');
+        document.getElementById('errorMsg').textContent = 'Lỗi kết nối máy chủ: ' + err.message;
+      }
+    }
+
+    function renderOrderDetails(order, paymentInfo) {
+      document.getElementById('resOrderId').textContent = order.id;
+      const st = statusMap[order.status] || { label: order.status, cls: 'bg-sand text-ink' };
+      const badge = document.getElementById('resStatusBadge');
+      badge.textContent = st.label;
+      badge.className = `px-3 py-1 rounded-full text-xs font-bold uppercase ${st.cls}`;
+
+      document.getElementById('resOrderDate').textContent = `Đặt lúc: ${new Date(order.createdAt).toLocaleString('vi-VN')}`;
+      document.getElementById('resOrderTotal').textContent = formatVND(order.total);
+
+      // Customer
+      document.getElementById('resCustName').textContent = order.customer.name;
+      document.getElementById('resCustPhone').textContent = order.customer.phone;
+      document.getElementById('resCustAddress').textContent = order.customer.address;
+      document.getElementById('resCustNotes').textContent = order.customer.notes || 'Không có';
+
+      // Payment
+      document.getElementById('resPaymentMethod').textContent = order.paymentMethod === 'vietqr' ? 'VietQR Chuyển Khoản' : (order.paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng (COD)' : order.paymentMethod);
+      document.getElementById('resPaymentStatus').textContent = order.paymentStatus === 'paid' ? '✓ Đã Thanh Toán' : (order.paymentStatus === 'pending_payment' ? '⏳ Chờ Chuyển Khoản' : 'Chưa Thanh Toán');
+
+      // VietQR Box
+      const qrBox = document.getElementById('resVietQRBox');
+      if (order.paymentMethod === 'vietqr' && order.paymentStatus !== 'paid' && paymentInfo) {
+        qrBox.classList.remove('hidden');
+        qrBox.innerHTML = `
+          <div class="flex items-center gap-3">
+            <img src="${paymentInfo.qrUrl}" alt="QR" class="w-20 h-20 rounded-lg border border-wood/20 object-contain" />
+            <div class="space-y-1">
+              <span class="text-[10px] font-bold text-amberFlame block uppercase">Quét QR Hoàn Tất Thanh Toán</span>
+              <p class="font-mono text-xs font-bold text-wood">${paymentInfo.accountNo} (${paymentInfo.bankName})</p>
+              <p class="text-[11px] text-earth">Nội dung CK: <strong class="text-ink font-mono">${paymentInfo.transferContent}</strong></p>
+            </div>
+          </div>
+        `;
+      } else {
+        qrBox.classList.add('hidden');
+      }
+
+      // Timeline
+      const timelineBox = document.getElementById('orderTimeline');
+      const events = order.timeline && order.timeline.length ? order.timeline : [
+        { status: 'pending', time: order.createdAt, message: 'Đơn hàng được khởi tạo thành công.' }
+      ];
+      timelineBox.innerHTML = events.map((ev, idx) => `
+        <div class="relative pl-8">
+          <div class="absolute left-2 top-1.5 w-3.5 h-3.5 rounded-full bg-wood border-2 border-white shadow-xs"></div>
+          <div class="text-xs">
+            <span class="font-bold text-ink">${ev.message}</span>
+            <span class="block text-[11px] text-earth mt-0.5">${new Date(ev.time).toLocaleString('vi-VN')}</span>
+          </div>
+        </div>
+      `).join('');
+
+      // Items
+      const itemsBox = document.getElementById('resItemsList');
+      itemsBox.innerHTML = (order.items || []).map(item => `
+        <div class="flex items-center gap-3 p-3 rounded-2xl bg-beige/40 border border-wood/10 text-xs">
+          ${item.image ? `<img src="${item.image}" alt="${item.name}" class="w-14 h-14 rounded-xl object-cover shrink-0 border border-wood/10" />` : ''}
+          <div class="flex-1 min-w-0">
+            <h5 class="font-semibold text-ink truncate">${item.name}</h5>
+            <p class="text-[11px] text-earth">Kích thước: <strong>${item.sizeKey}</strong> • Số lượng: <strong>${item.qty}</strong></p>
+            ${item.cardWish ? `<p class="text-[11px] text-wood italic mt-0.5">💌 Thiệp chúc: "${item.cardWish}"</p>` : ''}
+          </div>
+          <div class="font-bold text-wood shrink-0">
+            ${formatVND(item.price * item.qty)}
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('orderResultBox').classList.remove('hidden');
+    }
+
+    // Auto-search if code or query in URL
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const q = urlParams.get('code') || urlParams.get('query');
+      if (q) {
+        document.getElementById('orderQueryInput').value = q;
+        handleSearchOrder();
+      }
+    });
+  </script>
+</body>
+</html>
