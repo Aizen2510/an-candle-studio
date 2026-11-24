@@ -253,27 +253,27 @@
         </a>
 
         <!-- Desktop Navigation Links -->
-        <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium text-ink/90">
-          <a href="#home" class="hover:text-wood transition-colors py-1 border-b-2 border-transparent hover:border-amberFlame">Trang chủ</a>
-          <a href="#collection" class="hover:text-wood transition-colors py-1 border-b-2 border-transparent hover:border-amberFlame">Bộ sưu tập</a>
-          <a href="#ar-simulator" class="hover:text-herbal transition-colors py-1 border-b-2 border-transparent hover:border-herbal flex items-center gap-1.5 font-semibold text-herbal">
-            <span>Studio 3D/AR/VR</span>
+        <nav class="hidden lg:flex items-center space-x-4 xl:space-x-6 text-xs xl:text-sm font-medium text-ink/90 whitespace-nowrap shrink-0">
+          <a href="#home" class="whitespace-nowrap shrink-0 hover:text-wood transition-colors py-1 border-b-2 border-transparent hover:border-amberFlame">Trang chủ</a>
+          <a href="#collection" class="whitespace-nowrap shrink-0 hover:text-wood transition-colors py-1 border-b-2 border-transparent hover:border-amberFlame">Bộ sưu tập</a>
+          <a href="#ar-simulator" class="whitespace-nowrap shrink-0 hover:text-herbal transition-colors py-1 border-b-2 border-transparent hover:border-herbal flex items-center gap-1.5 font-semibold text-herbal">
+            <span class="whitespace-nowrap">Studio 3D/AR/VR</span>
             <span class="px-1.5 py-0.5 text-[10px] font-bold bg-herbal text-cream rounded-full">3D</span>
           </a>
-          <a href="#story-security" class="hover:text-wood transition-colors py-1 border-b-2 border-transparent hover:border-amberFlame">Câu chuyện & Cam kết</a>
-          <a href="#payment-guide" class="hover:text-wood transition-colors py-1 border-b-2 border-transparent hover:border-amberFlame">Thanh toán & Bảo mật</a>
+          <a href="#story-security" class="whitespace-nowrap shrink-0 hover:text-wood transition-colors py-1 border-b-2 border-transparent hover:border-amberFlame">Câu chuyện & Cam kết</a>
+          <a href="#payment-guide" class="whitespace-nowrap shrink-0 hover:text-wood transition-colors py-1 border-b-2 border-transparent hover:border-amberFlame">Thanh toán & Bảo mật</a>
         </nav>
 
         <!-- Right Actions: Smart Search, Quiz, Account, Cart, Mobile Menu -->
-        <div class="flex items-center gap-2 sm:gap-2.5">
+        <div class="flex items-center gap-2 sm:gap-2.5 shrink-0 whitespace-nowrap">
           <!-- Smart Search Bar -->
-          <div class="relative flex items-center">
+          <div class="relative flex items-center shrink-0">
             <input 
               type="text" 
               id="searchInput" 
               oninput="handleSearch(this.value)"
               placeholder="Tìm CALM, FOCUS, COZY..." 
-              class="w-32 sm:w-40 md:w-48 pl-8 pr-3 py-2 text-xs sm:text-sm bg-beige/80 border border-wood/15 rounded-full text-ink placeholder-earth/70 focus:outline-none focus:border-herbal focus:bg-white transition-all"
+              class="w-28 sm:w-36 md:w-40 lg:w-36 xl:w-44 pl-8 pr-3 py-2 text-xs sm:text-sm bg-beige/80 border border-wood/15 rounded-full text-ink placeholder-earth/70 focus:outline-none focus:border-herbal focus:bg-white transition-all"
             />
             <svg class="w-4 h-4 text-earth absolute left-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -281,13 +281,13 @@
           </div>
 
           <!-- Scent Quiz Trigger Button -->
-          <button onclick="openQuizModal()" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-herbalLight text-herbal border border-herbal/25 text-xs font-semibold hover:bg-herbal hover:text-cream transition" title="Làm Quiz chọn mùi hương">
-            <span>✨ Quiz Chọn Mùi</span>
+          <button onclick="openQuizModal()" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-herbalLight text-herbal border border-herbal/25 text-xs font-semibold hover:bg-herbal hover:text-cream transition whitespace-nowrap shrink-0" title="Làm Quiz chọn mùi hương">
+            <span class="whitespace-nowrap">✨ Quiz Chọn Mùi</span>
           </button>
 
           <!-- Order Tracking Button -->
-          <a href="/track" class="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-wood/10 text-wood border border-wood/20 text-xs font-semibold hover:bg-wood hover:text-cream transition" title="Tra cứu đơn hàng">
-            <span>📦 Tra Cứu Đơn</span>
+          <a href="/track" class="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-wood/10 text-wood border border-wood/20 text-xs font-semibold hover:bg-wood hover:text-cream transition whitespace-nowrap shrink-0" title="Tra cứu đơn hàng">
+            <span class="whitespace-nowrap">📦 Tra Cứu Đơn</span>
           </a>
 
           <!-- Account Button -->
@@ -2170,7 +2170,7 @@
         batchCode: "Lô #AN-COZY-2611A",
         rating: 5.0,
         reviews: 389,
-        image: "https://images.unsplash.com/photo-1608181831718-c9ffd8685576?auto=format&fit=crop&w=700&q=80",
+        image: "https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?auto=format&fit=crop&w=800&q=85",
         description: "Vị ngọt ấm áp của đậu Vani Madagascar hòa quyện nhựa hổ phách vàng và gỗ guaiac, biến buổi tối se lạnh thành không gian quây quần ấm cúng.",
         topNote: "Hạnh nhân rang, Quế chi nhẹ",
         heartNote: "Vani Madagascar, Hoa phong lan",

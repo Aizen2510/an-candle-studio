@@ -112,7 +112,7 @@
         "90g": 139000,
         "180g": 229000
       },
-      "image": "https://images.unsplash.com/photo-1608181831718-c9ffd8685576?auto=format&fit=crop&w=700&q=80",
+      "image": "https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?auto=format&fit=crop&w=800&q=85",
       "description": "Vị ngọt ấm áp của đậu Vani Madagascar hòa quyện nhựa hổ phách vàng và gỗ guaiac, biến buổi tối se lạnh thành không gian quây quần ấm cúng.",
       "topNote": "Hạnh nhân rang, Quế chi nhẹ",
       "heartNote": "Vani Madagascar, Hoa phong lan",
@@ -192,6 +192,52 @@
     }
   ],
   "orders": [
+    {
+      "id": "AN-2611-292977",
+      "createdAt": "2026-11-24T16:15:34.912Z",
+      "customer": {
+        "name": "Nguyễn Minh Anh",
+        "phone": "0912 345 678",
+        "email": "",
+        "address": "Số 18 Duy Tân, Phường Dịch Vọng Hậu, Cầu Giấy, Hà Nội",
+        "notes": ""
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "AN Tĩnh — Gỗ Đàn Hương & Oải Hương",
+          "sizeKey": "180g",
+          "qty": 1,
+          "price": 229000,
+          "cardWish": "",
+          "image": "https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?auto=format&fit=crop&w=700&q=80"
+        },
+        {
+          "id": 3,
+          "name": "AN Tỉnh — Cam Ngọt & Bạc Hà Thảo Mộc",
+          "sizeKey": "180g",
+          "qty": 1,
+          "price": 229000,
+          "cardWish": "",
+          "image": "https://images.unsplash.com/photo-1572726729207-a78d6feb18d7?auto=format&fit=crop&w=700&q=80"
+        }
+      ],
+      "paymentMethod": "vietqr",
+      "paymentStatus": "pending_payment",
+      "subtotal": 458000,
+      "discount": 0,
+      "voucherCode": "",
+      "shippingFee": 0,
+      "total": 458000,
+      "status": "pending",
+      "timeline": [
+        {
+          "status": "pending",
+          "time": "2026-11-24T16:15:34.912Z",
+          "message": "Đơn hàng mới được khởi tạo từ website."
+        }
+      ]
+    },
     {
       "id": "AN-2611-162028",
       "createdAt": "2026-11-24T13:18:34.091Z",
